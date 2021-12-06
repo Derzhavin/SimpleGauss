@@ -1,1 +1,0 @@
-/usr/bin/c++  -std=c++17 -g CMakeFiles/matrix_example.dir/main_mat.cpp.o -o matrix_example 

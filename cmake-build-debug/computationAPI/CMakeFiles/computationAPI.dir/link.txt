@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC  -std=c++17 -g -shared -Wl,-soname,libcomputationAPI.so -o libcomputationAPI.so CMakeFiles/computationAPI.dir/algo.cpp.o  -Wl,-rpath,/media/denis/Seagate/Projects/SimpleGauss/cmake-build-debug/matrix ../matrix/libmatrix.so 
