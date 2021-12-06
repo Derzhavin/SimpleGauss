@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../computationAPI/IComputationAPI.h
+
+../computationAPI/SimpleCPUAPI.h
+IComputationAPI.h
+../computationAPI/IComputationAPI.h
+
+../matrix/IMat.h
+utility
+-
+stddef.h
+-
+
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/ISimpleGauss.h
+computationAPI/IComputationAPI.h
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/computationAPI/IComputationAPI.h
+matrix/IMat.h
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/matrix/IMat.h
+
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/SimpleGaussCpu.h
+ISimpleGauss.h
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/ISimpleGauss.h
+computationAPI/SimpleCPUAPI.h
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/computationAPI/SimpleCPUAPI.h
+
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/main_simple_gauss.cpp
+ISimpleGauss.h
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/ISimpleGauss.h
+SimpleGaussCpu.h
+/media/denis/Seagate/Projects/SimpleGauss/simpleGauss/SimpleGaussCpu.h
+

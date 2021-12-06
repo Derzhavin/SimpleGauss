@@ -18,9 +18,8 @@ class FixedMat: public IMat<FixedMat<MatT>, MatT>
     MatT** _arr;
 public:
     FixedMat(size_t rows, size_t cols):
-        IMat<FixedMat<MatT>, MatT>(), _rowsSize(rows), _colsSize(cols)
+        IMat<FixedMat<MatT>, MatT>(), _rowsSize(rows), _colsSize(cols), _arr(new MatT * [_rowsSize])
     {
-        _arr = new MatT * [_rowsSize];
         _arr[0] = new MatT [_rowsSize * _colsSize] {0};
         for (size_t i = 1; i != _rowsSize ; ++i)
             _arr[i] = _arr[i - 1] + _colsSize;
@@ -36,17 +35,26 @@ public:
             delete [] _arr;
         }
     }
-    FixedMat(FixedMat&& other)
+    FixedMat(FixedMat&& other): _arr(other._arr), _rowsSize(other._rowsSize), _colsSize(other._colsSize)
     {
 #ifdef DEBUG_FIXED_MAT
         std::cout << "FixedMat(FixedMat&& other)" << std::endl;
 #endif
-        _arr = other._arr;
-        _colsSize = other._colsSize;
-        _rowsSize = other._rowsSize;
         other._colsSize = 0;
         other._rowsSize = 0;
         other._arr = nullptr;
+    }
+
+    FixedMat(const FixedMat& other): _rowsSize(other._rowsSize), _colsSize(other._colsSize), _arr(new MatT * [_rowsSize])
+    {
+#ifdef DEBUG_FIXED_MAT
+        std::cout << "FixedMat(const FixedMat& other)" << std::endl;
+#endif
+        _arr[0] = new MatT [_rowsSize * _colsSize] {0};
+        for (size_t i = 1; i != _rowsSize ; ++i)
+            _arr[i] = _arr[i - 1] + _colsSize;
+
+        std::copy(other._arr[0], other._arr[0] + _rowsSize * _colsSize, _arr[0]);
     }
 
     inline MatT * const row(size_t i)

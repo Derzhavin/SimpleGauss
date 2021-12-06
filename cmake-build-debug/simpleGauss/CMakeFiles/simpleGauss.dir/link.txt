@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -std=c++17 -g -shared -Wl,-soname,libsimpleGauss.so -o libsimpleGauss.so CMakeFiles/simpleGauss.dir/main_simple_gauss.cpp.o  -Wl,-rpath,/media/denis/Seagate/Projects/SimpleGauss/cmake-build-debug/computationAPI:/media/denis/Seagate/Projects/SimpleGauss/cmake-build-debug/matrix ../computationAPI/libcomputationAPI.so ../matrix/libmatrix.so 

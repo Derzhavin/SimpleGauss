@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -std=c++17 -g -shared -Wl,-soname,libmatrix.so -o libmatrix.so CMakeFiles/matrix.dir/main_mat.cpp.o CMakeFiles/matrix.dir/matrix.cpp.o 

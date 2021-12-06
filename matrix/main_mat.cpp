@@ -13,8 +13,10 @@ int main()
     auto fixedMat = JsonMatIO<FixedMat<int>>::parseFile(filename);
 
     fixedMat[0][2] = 12;
-    std::cout << JsonMatIO<FixedMat<int>>::stringify(fixedMat) << std::endl;
+    auto matClone(fixedMat);
+
+    std::cout << JsonMatIO<FixedMat<int>>::stringify(matClone) << std::endl;
     std::string outfile("saved.json");
-    JsonMatIO<FixedMat<int>>::saveMat(fixedMat, outfile);
+    JsonMatIO<FixedMat<int>>::saveMat(matClone, outfile);
     return 0;
 }
