@@ -6,7 +6,6 @@ list(REMOVE_ITEM LIB_SOURCES "main_mat.cpp")
 
 find_package(nlohmann_json 3.2.0 REQUIRED)
 
-add_definitions(-DDEBUG_FIXED_MAT)
 add_executable(${project_dir}_example main_mat.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${LIB_SOURCES})

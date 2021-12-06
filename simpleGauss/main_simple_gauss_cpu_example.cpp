@@ -4,7 +4,7 @@
 
 #include "ISimpleGauss.h"
 #include "SimpleGaussCpu.h"
-#include "matrix/FixedMat.h"
+#include "matrix/DenseMat.h"
 #include "matrix/JsonMatIO.h"
 
 #include <string>
@@ -12,12 +12,14 @@
 int main()
 {
     std::string filename("../../mat.json");
-    auto mat = JsonMatIO<FixedMat<double>>::parseFile(filename);
+    auto mat = JsonMatIO<DenseMat<double>, double>::parseFile(filename);
 
-    SimpleGaussCPU<FixedMat<double>> solver;
+    SimpleGaussCPU<DenseMat<double>> solver;
     auto matSolution(solver.solve(mat));
 
+    std:: cout << JsonMatIO<DenseMat<double>, double>::stringify(matSolution) << std:: endl;
+
     std::string fileSolution("solution.json");
-    JsonMatIO<FixedMat<double>>::saveMat(matSolution, fileSolution);
+    JsonMatIO<DenseMat<double>, double>::saveMat(matSolution, fileSolution);
     return 0;
 }

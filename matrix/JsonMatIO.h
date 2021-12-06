@@ -5,12 +5,10 @@
 #ifndef SIMPLEGAUSS_JSONMATIO_H
 #define SIMPLEGAUSS_JSONMATIO_H
 
-#include "IMat.h"
-
 #include <fstream>
 #include <nlohmann/json.hpp>
 
-template<class MatImpl>
+template<class MatImpl, typename MatT>
 class JsonMatIO {
 public:
     static MatImpl parseJSON(nlohmann::json& jsonObj)
@@ -40,7 +38,14 @@ public:
         {
             nlohmann::json jCols = nlohmann::json::array();
             for (j = 0; j < mat.colsSize(); ++j)
-                jCols.push_back(mat[i][j]);
+            {
+                if (std::isnan(mat[i][j]))
+                    jCols.push_back(0);
+                else if (std::isinf(mat[i][j]))
+                    jCols.push_back(std::numeric_limits<MatT>::max());
+                else
+                    jCols.push_back(mat[i][j]);
+            }
             jRows.push_back(jCols);
         }
         jsonObj["matrix"] = jRows;
@@ -58,7 +63,7 @@ public:
     {
         std::ifstream ifs(filename);
         nlohmann::json jf = nlohmann::json::parse(ifs);
-        MatImpl mat = parseJSON(jf);
+        MatImpl mat(parseJSON(jf));
         return std::move(mat);
     }
 

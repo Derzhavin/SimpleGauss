@@ -10,26 +10,33 @@
 
 template<class MatImplT, typename MatT>
 class IMat {
+protected:
+    size_t _colsSize;
+    size_t _rowsSize;
+
 public:
+    IMat(size_t rows, size_t cols): _rowsSize(rows), _colsSize(cols) {}
+
     inline MatT * const operator [] (size_t i)
     {
-        return static_cast<MatImplT*>(this)->row(i);
+        return impl()->row(i);
     }
     inline std::pair<size_t, size_t> dim()
     {
-        return static_cast<MatImplT*>(this)->dim();
+        return std::make_pair(_rowsSize, _colsSize);
     }
     inline size_t colsSize()
     {
-        return static_cast<MatImplT*>(this)->colsSize();
+        return _colsSize;
     }
     inline size_t rowsSize()
     {
-        return static_cast<MatImplT*>(this)->rowsSize();
+        return _rowsSize;
     }
-    inline MatT * const row(size_t i)
+private:
+    inline MatImplT* impl()
     {
-        return static_cast<MatImplT*>(this)->row(i);
+        return static_cast<MatImplT*>(this);
     }
 };
 

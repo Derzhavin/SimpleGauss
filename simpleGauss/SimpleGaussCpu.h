@@ -8,13 +8,13 @@
 #include "ISimpleGauss.h"
 #include "computationAPI/SimpleCPUAPI.h"
 
-template<class IMat>
-class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<IMat>, IMat, SimpleCPUAPI> {
+template<class MatImpl>
+class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl>, MatImpl, SimpleCPUAPI> {
 public:
-    IMat& solve(IMat& mat)
+    MatImpl solve(MatImpl& mat)
     {
-        IMat matClone(mat);
-        IMat matSolution(1, mat.rowsSize());
+        MatImpl matClone(mat);
+        MatImpl matSolution(1, mat.rowsSize());
 
         size_t i, j, k;
         double coeff;
@@ -41,7 +41,7 @@ public:
             matSolution[0][mat.rowsSize() - 1 - k] /= matClone[mat.rowsSize() - 1 - k][mat.rowsSize() - 1 - k];
         }
 
-        return matSolution;
+        return std::move(matSolution);
     }
 };
 #endif //SIMPLEGAUSS_SIMPLEGAUSSCPU_H
