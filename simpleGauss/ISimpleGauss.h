@@ -6,17 +6,16 @@
 #define SIMPLEGAUSS_ISIMPLEGAUSS_H
 
 #include "computationAPI/IComputationAPI.h"
-#include "matrix/IMat.h"
+#include "matrix/BasicMat.h"
 
 
 template<class SimpleGaussImpl, class IMat, class ComputationAPIImpl>
 class ISimpleGauss {
-    using ApiBase = IComputationAPI<ComputationAPIImpl>;
     ComputationAPIImpl computationApi;
 public:
     explicit ISimpleGauss(Device device=Device::CPU)
     {
-        computationApi.ApiBase::setup(device);
+        computationApi.setup(device);
     }
     inline IMat& solve(IMat& mat, IMat& matSolution)
     {
@@ -24,7 +23,7 @@ public:
     }
     ~ISimpleGauss()
     {
-        computationApi.ApiBase::finalize();
+        computationApi.finalize();
     }
 };
 

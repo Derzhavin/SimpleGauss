@@ -9,13 +9,13 @@
 #include <stddef.h>
 
 template<class MatImplT, typename MatT>
-class IMat {
+class BasicMat {
 protected:
     size_t _colsSize;
     size_t _rowsSize;
 
 public:
-    IMat(size_t rows, size_t cols): _rowsSize(rows), _colsSize(cols) {}
+    BasicMat(size_t rows, size_t cols): _rowsSize(rows), _colsSize(cols) {}
 
     inline MatT * const operator [] (size_t i)
     {

@@ -5,20 +5,20 @@
 #ifndef SIMPLEGAUSS_DENSEMAT_H
 #define SIMPLEGAUSS_DENSEMAT_H
 
-#include "IMat.h"
+#include "BasicMat.h"
 
 #include <iostream>
 
 template<typename MatT>
-class DenseMat: public IMat<DenseMat<MatT>, MatT>
+class DenseMat: public BasicMat<DenseMat<MatT>, MatT>
 {
     friend class IMat<DenseMat<MatT>, MatT>;
-    using Base = IMat<DenseMat<MatT>, MatT>;
+    using Base = BasicMat<DenseMat<MatT>, MatT>;
 
     MatT** _arr;
 public:
     DenseMat(size_t rows, size_t cols):
-            IMat<DenseMat<MatT>, MatT>(rows, cols), _arr(new MatT * [rows])
+            BasicMat<DenseMat<MatT>, MatT>(rows, cols), _arr(new MatT * [rows])
     {
         _arr[0] = new MatT [rows * cols] {0};
         for (size_t i = 1; i != rows ; ++i)
@@ -37,8 +37,8 @@ public:
         this->swap(other);
     }
     DenseMat(DenseMat const & other):
-        IMat<DenseMat<MatT>, MatT>(other._rowsSize, other._colsSize),
-             _arr(new MatT * [Base::_rowsSize])
+            BasicMat<DenseMat<MatT>, MatT>(other._rowsSize, other._colsSize),
+            _arr(new MatT * [Base::_rowsSize])
     {
         _arr[0] = new MatT [Base::_rowsSize * Base::_colsSize] {0};
         for (size_t i = 1; i != Base::_rowsSize ; ++i)
@@ -69,13 +69,12 @@ public:
         other._rowsSize = 0;
         other._colsSize = 0;
     }
-private:
-    DenseMat(): IMat<DenseMat<MatT>, MatT>(0, 0), _arr(nullptr) {}
-
     inline MatT * const row(size_t& i)
     {
         return _arr[i];
     }
+private:
+    DenseMat(): BasicMat<DenseMat<MatT>, MatT>(0, 0), _arr(nullptr) {}
 };
 
 

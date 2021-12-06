@@ -10,6 +10,7 @@
 
 template<class MatImpl>
 class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl>, MatImpl, SimpleCPUAPI> {
+        friend class ISimpleGauss<SimpleGaussCPU<MatImpl>, MatImpl, SimpleCPUAPI>;
 public:
     MatImpl solve(MatImpl& mat)
     {

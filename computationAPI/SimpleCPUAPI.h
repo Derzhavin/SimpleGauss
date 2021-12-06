@@ -11,6 +11,7 @@
 class SimpleCPUAPI: public IComputationAPI<SimpleCPUAPI> {
     friend class IComputationAPI<SimpleCPUAPI>;
 
+public:
     bool _setuped;
 
     inline bool setup(Device& device)
