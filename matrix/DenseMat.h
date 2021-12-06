@@ -12,7 +12,7 @@
 template<typename MatT>
 class DenseMat: public BasicMat<DenseMat<MatT>, MatT>
 {
-    friend class IMat<DenseMat<MatT>, MatT>;
+    friend class BasicMat<DenseMat<MatT>, MatT>;
     using Base = BasicMat<DenseMat<MatT>, MatT>;
 
     MatT** _arr;

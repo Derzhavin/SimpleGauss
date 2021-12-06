@@ -10,6 +10,7 @@
 int main()
 {
     DenseMat<double> mat(5, 4);
+
     auto matClone(mat);
     std::cout << JsonMatIO<DenseMat<double>, double>::stringify(matClone) << std::endl;
     auto row = mat.BasicMat<DenseMat<double>,double>::row(0);
