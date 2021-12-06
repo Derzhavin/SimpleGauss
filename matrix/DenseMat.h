@@ -5,20 +5,20 @@
 #ifndef SIMPLEGAUSS_DENSEMAT_H
 #define SIMPLEGAUSS_DENSEMAT_H
 
-#include "BasicMat.h"
+#include "BaseMat.h"
 
 #include <iostream>
 
 template<typename MatT>
-class DenseMat: public BasicMat<DenseMat<MatT>, MatT>
+class DenseMat: public BaseMat<DenseMat<MatT>, MatT>
 {
-    friend class BasicMat<DenseMat<MatT>, MatT>;
-    using Base = BasicMat<DenseMat<MatT>, MatT>;
+    friend class BaseMat<DenseMat<MatT>, MatT>;
+    using Base = BaseMat<DenseMat<MatT>, MatT>;
 
     MatT** _arr;
 public:
     DenseMat(size_t rows, size_t cols):
-            BasicMat<DenseMat<MatT>, MatT>(rows, cols), _arr(new MatT * [rows])
+            BaseMat<DenseMat<MatT>, MatT>(rows, cols), _arr(new MatT * [rows])
     {
         _arr[0] = new MatT [rows * cols] {0};
         for (size_t i = 1; i != rows ; ++i)
@@ -32,19 +32,19 @@ public:
             delete [] _arr;
         }
     }
-    DenseMat(DenseMat&& other): DenseMat()
+    DenseMat(DenseMat&& other) noexcept : DenseMat()
     {
         this->swap(other);
     }
     DenseMat(DenseMat const & other):
-            BasicMat<DenseMat<MatT>, MatT>(other._rowsSize, other._colsSize),
-            _arr(new MatT * [Base::_rowsSize])
+            BaseMat<DenseMat<MatT>, MatT>(other.Base::rowsSize(), other.Base::colsSize()),
+            _arr(new MatT * [Base::rowsSize()])
     {
-        _arr[0] = new MatT [Base::_rowsSize * Base::_colsSize] {0};
-        for (size_t i = 1; i != Base::_rowsSize ; ++i)
-            _arr[i] = _arr[i - 1] + Base::_colsSize;
+        _arr[0] = new MatT [Base::rowsSize() * Base::colsSize()] {0};
+        for (size_t i = 1; i != Base::rowsSize() ; ++i)
+            _arr[i] = _arr[i - 1] + Base::colsSize();
 
-        std::copy(other._arr[0], other._arr[0] + Base::_rowsSize * Base::_colsSize, _arr[0]);
+        std::copy(other._arr[0], other._arr[0] + Base::rowsSize() * Base::colsSize(), _arr[0]);
     }
 
     DenseMat& operator=(DenseMat const& other)
@@ -59,22 +59,22 @@ public:
         return *this;
     }
 
-    void swap(DenseMat& other) throw()
+    void swap(DenseMat& other) noexcept
     {
         _arr = other._arr;
-        Base::_rowsSize = other._rowsSize;
-        Base::_colsSize = other._colsSize;
+        Base::_rowsSize = other.rowsSize();
+        Base::_colsSize = other.colsSize();
 
         other._arr = nullptr;
         other._rowsSize = 0;
         other._colsSize = 0;
     }
-    inline MatT * const row(size_t& i)
+    inline MatT * const row(size_t i)
     {
         return _arr[i];
     }
 private:
-    DenseMat(): BasicMat<DenseMat<MatT>, MatT>(0, 0), _arr(nullptr) {}
+    DenseMat(): BaseMat<DenseMat<MatT>, MatT>(0, 0), _arr(nullptr) {}
 };
 
 

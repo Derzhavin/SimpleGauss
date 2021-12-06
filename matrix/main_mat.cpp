@@ -9,11 +9,16 @@
 
 int main()
 {
-    DenseMat<double> mat(5, 4);
+//    DenseMat<double> mat(5, 4);
+//    DenseMat<int> mat1(5, 4);
+    std::string filename("../../mat.json");
+    auto mat = JsonMatIO<DenseMat<double>, double>::parseFile(filename);
 
-    auto matClone(mat);
-    std::cout << JsonMatIO<DenseMat<double>, double>::stringify(matClone) << std::endl;
-    auto row = mat.BasicMat<DenseMat<double>,double>::row(0);
-    std::cout << row[0] << std::endl;
+    mat.printMatInStdin(10);
+//    DenseMat<double>::BaseMat& basicMat = mat;
+//    auto matClone(mat);
+//    std::cout << JsonMatIO<DenseMat<double>, double>::stringify(matClone) << std::endl;
+//    auto row = mat.row(0);
+//    std::cout << row[0] << std::endl;
     return 0;
 }

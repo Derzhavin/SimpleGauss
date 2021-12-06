@@ -8,14 +8,17 @@
 #include "ISimpleGauss.h"
 #include "computationAPI/SimpleCPUAPI.h"
 
-template<class MatImpl>
-class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl>, MatImpl, SimpleCPUAPI> {
-        friend class ISimpleGauss<SimpleGaussCPU<MatImpl>, MatImpl, SimpleCPUAPI>;
+template<class MatImpl, typename MatT>
+class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl,MatT, SimpleCPUAPI> {
+        friend class ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl,MatT, SimpleCPUAPI>;
 public:
-    MatImpl solve(MatImpl& mat)
+    MatImpl solve(BaseMat<MatImpl, MatT>& mat)
     {
-        MatImpl matClone(mat);
+        MatImpl matClone(static_cast<MatImpl&>(mat));
+        BaseMat<MatImpl, MatT>& baseMatClone = matClone;
+
         MatImpl matSolution(1, mat.rowsSize());
+        BaseMat<MatImpl, MatT>& baseMatSolution = matSolution;
 
         size_t i, j, k;
         double coeff;
@@ -24,22 +27,22 @@ public:
         double pivot;
         for (k = 0; k < mat.rowsSize() - 1; ++k)
         {
-            pivot = matClone[k][k];
+            pivot = baseMatClone[k][k];
             for (i = k + 1; i < mat.rowsSize(); ++i)
             {
-                coeff = matClone[i][k] / pivot;
+                coeff = baseMatClone[i][k] / pivot;
                 for (j = k; j < mat.rowsSize() + 1; ++j)
-                    matClone[i][j] -= coeff * matClone[k][j];
+                    baseMatClone[i][j] -= coeff * baseMatClone[k][j];
             }
         }
 
         // Обратный проход
         for (k = 0; k < mat.rowsSize(); ++k)
         {
-            matSolution[0][mat.rowsSize() - 1 - k] = matClone[mat.rowsSize() - 1 - k][mat.rowsSize()];
+            baseMatSolution[0][mat.rowsSize() - 1 - k] = baseMatClone[mat.rowsSize() - 1 - k][mat.rowsSize()];
             for (i = mat.rowsSize() - 1 - k; i < mat.rowsSize() - 1; ++i)
-                matSolution[0][mat.rowsSize() - 1 - k] -= matClone[mat.rowsSize() - 1 - k][i + 1] * matSolution[0][i + 1];
-            matSolution[0][mat.rowsSize() - 1 - k] /= matClone[mat.rowsSize() - 1 - k][mat.rowsSize() - 1 - k];
+                baseMatSolution[0][mat.rowsSize() - 1 - k] -= baseMatClone[mat.rowsSize() - 1 - k][i + 1] * baseMatSolution[0][i + 1];
+            baseMatSolution[0][mat.rowsSize() - 1 - k] /= baseMatClone[mat.rowsSize() - 1 - k][mat.rowsSize() - 1 - k];
         }
 
         return std::move(matSolution);

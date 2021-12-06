@@ -14,7 +14,7 @@ int main()
     std::string filename("../../mat.json");
     auto mat = JsonMatIO<DenseMat<double>, double>::parseFile(filename);
 
-    SimpleGaussCPU<DenseMat<double>> solver;
+    SimpleGaussCPU<DenseMat<double>, double> solver;
     auto matSolution(solver.solve(mat));
 
     std:: cout << JsonMatIO<DenseMat<double>, double>::stringify(matSolution) << std:: endl;

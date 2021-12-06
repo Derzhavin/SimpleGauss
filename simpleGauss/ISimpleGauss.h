@@ -6,10 +6,10 @@
 #define SIMPLEGAUSS_ISIMPLEGAUSS_H
 
 #include "computationAPI/IComputationAPI.h"
-#include "matrix/BasicMat.h"
+#include "matrix/BaseMat.h"
 
 
-template<class SimpleGaussImpl, class IMat, class ComputationAPIImpl>
+template<class SimpleGaussImpl, class MatImpl, typename MatT, class ComputationAPIImpl>
 class ISimpleGauss {
     ComputationAPIImpl computationApi;
 public:
@@ -17,9 +17,9 @@ public:
     {
         computationApi.setup(device);
     }
-    inline IMat& solve(IMat& mat, IMat& matSolution)
+    inline MatImpl& solve(BaseMat<MatImpl, MatT>& mat)
     {
-        return static_cast<SimpleGaussImpl*>(this)->solve(mat, matSolution);
+        return static_cast<SimpleGaussImpl*>(this)->solve(mat);
     }
     ~ISimpleGauss()
     {

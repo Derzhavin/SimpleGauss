@@ -8,6 +8,8 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
+#include "BaseMat.h"
+
 template<class MatImpl, typename MatT>
 class JsonMatIO {
 public:
@@ -26,7 +28,7 @@ public:
         return std::move(mat);
     }
 
-    static nlohmann::json loadJSON(MatImpl& mat)
+    static nlohmann::json loadJSON(BaseMat<MatImpl,MatT>& mat)
     {
         nlohmann::json jsonObj;
 
@@ -67,11 +69,11 @@ public:
         return std::move(mat);
     }
 
-    static std::string stringify(MatImpl& mat)
+    static std::string stringify(BaseMat<MatImpl, MatT>& mat)
     {
         return std::move(loadJSON(mat).dump());
     }
-    static void saveMat(MatImpl& mat, std::string& filename)
+    static void saveMat(BaseMat<MatImpl, MatT>& mat, std::string& filename)
     {
         std::ofstream file(filename);
         file << loadJSON(mat);
