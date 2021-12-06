@@ -16,11 +16,17 @@ class IComputationAPI {
 public:
     inline bool setup(Device& device)
     {
-        return static_cast<ComputationAPIImpl*>(this)->setup(device);
+        return impl()->setup(device);
     }
     inline bool finalize()
     {
-        return static_cast<ComputationAPIImpl*>(this)->finalize();
+        return impl()->finalize();
+    }
+
+private:
+    inline ComputationAPIImpl* impl()
+    {
+        return static_cast<ComputationAPIImpl*>(this);
     }
 };
 

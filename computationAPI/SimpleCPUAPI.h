@@ -7,9 +7,12 @@
 
 
 #include "IComputationAPI.h"
+
 class SimpleCPUAPI: public IComputationAPI<SimpleCPUAPI> {
+    friend class IComputationAPI<SimpleCPUAPI>;
+
     bool _setuped;
-public:
+
     inline bool setup(Device& device)
     {
         _setuped = device == Device::CPU;

@@ -33,6 +33,10 @@ public:
     {
         return _rowsSize;
     }
+    inline MatT * const row(size_t i)
+    {
+        return impl()->row(i);
+    }
 private:
     inline MatImplT* impl()
     {

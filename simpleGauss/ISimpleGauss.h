@@ -5,25 +5,26 @@
 #ifndef SIMPLEGAUSS_ISIMPLEGAUSS_H
 #define SIMPLEGAUSS_ISIMPLEGAUSS_H
 
-#include "computationAPI//IComputationAPI.h"
+#include "computationAPI/IComputationAPI.h"
 #include "matrix/IMat.h"
 
 
 template<class SimpleGaussImpl, class IMat, class ComputationAPIImpl>
 class ISimpleGauss {
+    using ApiBase = IComputationAPI<ComputationAPIImpl>;
     ComputationAPIImpl computationApi;
 public:
-    ISimpleGauss(Device device=Device::CPU)
+    explicit ISimpleGauss(Device device=Device::CPU)
     {
-        computationApi.setup(device);
+        computationApi.ApiBase::setup(device);
     }
     inline IMat& solve(IMat& mat, IMat& matSolution)
     {
         return static_cast<SimpleGaussImpl*>(this)->solve(mat, matSolution);
     }
-    virtual ~ISimpleGauss()
+    ~ISimpleGauss()
     {
-        computationApi.finalize();
+        computationApi.ApiBase::finalize();
     }
 };
 
