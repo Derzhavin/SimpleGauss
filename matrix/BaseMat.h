@@ -21,7 +21,7 @@ public:
 
     inline MatT * const operator [] (size_t i)
     {
-        return impl()->row(i);
+        return impl()->rowImpl(i);
     }
     inline std::pair<size_t, size_t> dim() const
     {
@@ -37,7 +37,7 @@ public:
     }
     inline MatT * const row(size_t i)
     {
-        return impl()->row(i);
+        return impl()->rowImpl(i);
     }
     void printMatInStdin(size_t fieldWidth)
     {

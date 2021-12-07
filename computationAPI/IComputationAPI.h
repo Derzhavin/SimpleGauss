@@ -5,6 +5,8 @@
 #ifndef SIMPLEGAUSS_ICOMPUTATIONAPI_H
 #define SIMPLEGAUSS_ICOMPUTATIONAPI_H
 
+#include <string>
+
 enum class Device
 {
     CPU,
@@ -13,16 +15,23 @@ enum class Device
 
 template<class ComputationAPIImpl>
 class IComputationAPI {
+protected:
+    unsigned short _deviceId;
+    Device _device;
+
 public:
-    inline bool setup(Device& device)
+    inline bool setup(Device &device, unsigned short deviceId)
     {
-        return impl()->setup(device);
+        return impl()->setupImpl(device, 0);
     }
     inline bool finalize()
     {
-        return impl()->finalize();
+        return impl()->finalizeImpl();
     }
-
+    static inline std::string APIName()
+    {
+        return std::move(ComputationAPIImpl::APINameImpl());
+    }
 private:
     inline ComputationAPIImpl* impl()
     {

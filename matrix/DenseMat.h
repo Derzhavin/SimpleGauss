@@ -69,11 +69,10 @@ public:
         other._rowsSize = 0;
         other._colsSize = 0;
     }
-    inline MatT * const row(size_t i)
+    inline MatT * const rowImpl(size_t i)
     {
         return _arr[i];
     }
-private:
     DenseMat(): BaseMat<DenseMat<MatT>, MatT>(0, 0), _arr(nullptr) {}
 };
 

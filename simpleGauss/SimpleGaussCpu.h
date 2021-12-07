@@ -11,8 +11,15 @@
 template<class MatImpl, typename MatT>
 class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl,MatT, SimpleCPUAPI> {
         friend class ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl,MatT, SimpleCPUAPI>;
+
 public:
-    MatImpl solve(BaseMat<MatImpl, MatT>& mat)
+    explicit SimpleGaussCPU(bool warnings= false):
+        ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl, MatT, SimpleCPUAPI>(Device::CPU, 0, warnings=warnings)
+    {
+
+    }
+private:
+        MatImpl solveImpl(BaseMat<MatImpl, MatT>& mat)
     {
         MatImpl matClone(static_cast<MatImpl&>(mat));
         BaseMat<MatImpl, MatT>& baseMatClone = matClone;

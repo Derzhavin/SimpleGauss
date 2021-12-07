@@ -11,17 +11,20 @@
 class SimpleCPUAPI: public IComputationAPI<SimpleCPUAPI> {
     friend class IComputationAPI<SimpleCPUAPI>;
 
-public:
-    bool _setuped;
-
-    inline bool setup(Device& device)
+    inline bool setupImpl(Device &device, unsigned short deviceId)
     {
-        _setuped = device == Device::CPU;
-        return _setuped;
+        _deviceId = deviceId;
+        _device = device;
+
+        return deviceId == 0 && device == Device::CPU;
     }
-    inline bool finalize()
+    inline bool finalizeImpl()
     {
         return true;
+    }
+    static inline std::string APINameImpl()
+    {
+        return "SimpleCPUAPI";
     }
 };
 

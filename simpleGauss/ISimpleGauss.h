@@ -9,21 +9,47 @@
 #include "matrix/BaseMat.h"
 
 
-template<class SimpleGaussImpl, class MatImpl, typename MatT, class ComputationAPIImpl>
+template<class SimpleGaussImpl, class MatImpl, typename MatT, class IComputationAPI>
 class ISimpleGauss {
-    ComputationAPIImpl computationApi;
+    bool _setuped;
+    bool _warnings;
+    IComputationAPI iComputationApi;
+
 public:
-    explicit ISimpleGauss(Device device=Device::CPU)
+    explicit ISimpleGauss(Device device=Device::CPU, unsigned short deviceId=0, bool warnings= false)
     {
-        computationApi.setup(device);
-    }
-    inline MatImpl& solve(BaseMat<MatImpl, MatT>& mat)
-    {
-        return static_cast<SimpleGaussImpl*>(this)->solve(mat);
+        _setuped = iComputationApi.setup(device, deviceId);
+        _warnings = warnings;
     }
     ~ISimpleGauss()
     {
-        computationApi.finalize();
+        finalizeComputationAPI();
+    }
+    inline MatImpl solve(BaseMat<MatImpl, MatT>& mat)
+    {
+        if (_setuped)
+            return impl()->solveImpl(mat);
+        else if (_warnings)
+        {
+            std::cout   << "WARNING:" << IComputationAPI::APIName() << "did not run solve SimpleGauss because "
+                        << IComputationAPI::APIName() << "was not setuped" << std::endl;
+            return std::move(MatImpl());
+        }
+    }
+
+    inline bool finalizeComputationAPI()
+    {
+        if (_setuped) {
+            if(!iComputationApi.finalize() && _warnings)
+                std::cout << "WARNING:" << IComputationAPI::APIName() << "was not finalized successfully" << std::endl;
+        }
+        else if (_warnings)
+            std::cout << "WARNING:" << IComputationAPI::APIName() << "was not finalized because not setuped" << std::endl;
+    }
+private:
+    SimpleGaussImpl* impl()
+    {
+        return static_cast<SimpleGaussImpl*>(this);
     }
 };
 
