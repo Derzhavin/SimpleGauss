@@ -11,12 +11,9 @@
 class SimpleCPUAPI: public IComputationAPI<SimpleCPUAPI> {
     friend class IComputationAPI<SimpleCPUAPI>;
 
-    inline bool setupImpl(Device &device, unsigned short deviceId)
+    inline bool setupImpl()
     {
-        _deviceId = deviceId;
-        _device = device;
-
-        return deviceId == 0 && device == Device::CPU;
+        return true;
     }
     inline bool finalizeImpl()
     {
@@ -24,7 +21,7 @@ class SimpleCPUAPI: public IComputationAPI<SimpleCPUAPI> {
     }
     static inline std::string APINameImpl()
     {
-        return "SimpleCPUAPI";
+        return "Simple CPU API";
     }
 };
 

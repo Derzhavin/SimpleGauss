@@ -7,8 +7,6 @@
 
 #include "BaseMat.h"
 
-#include <iostream>
-
 template<typename MatT>
 class DenseMat: public BaseMat<DenseMat<MatT>, MatT>
 {

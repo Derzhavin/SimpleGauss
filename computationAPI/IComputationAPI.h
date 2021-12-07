@@ -16,21 +16,40 @@ enum class Device
 template<class ComputationAPIImpl>
 class IComputationAPI {
 protected:
-    unsigned short _deviceId;
-    Device _device;
-
+    bool _setuped;
+    bool _finalized;
 public:
-    inline bool setup(Device &device, unsigned short deviceId)
+    IComputationAPI(): _setuped(false), _finalized(false)
     {
-        return impl()->setupImpl(device, 0);
+        setup();
+    }
+    inline bool setup()
+    {
+        _setuped = impl()->setupImpl();
+        _finalized = false;
+        return _setuped;
     }
     inline bool finalize()
     {
-        return impl()->finalizeImpl();
+        _finalized = impl()->finalizeImpl();
+        _setuped = false;
+        return _finalized;
     }
     static inline std::string APIName()
     {
         return std::move(ComputationAPIImpl::APINameImpl());
+    }
+    ~IComputationAPI()
+    {
+        finalize();
+    }
+    bool setuped() const
+    {
+        return _setuped;
+    }
+    bool finalized() const
+    {
+        return _finalized;
     }
 private:
     inline ComputationAPIImpl* impl()

@@ -11,14 +11,13 @@
 
 template<class SimpleGaussImpl, class MatImpl, typename MatT, class IComputationAPI>
 class ISimpleGauss {
-    bool _setuped;
     bool _warnings;
     IComputationAPI iComputationApi;
 
 public:
-    explicit ISimpleGauss(Device device=Device::CPU, unsigned short deviceId=0, bool warnings= false)
+    explicit ISimpleGauss(bool warnings= false)
     {
-        _setuped = iComputationApi.setup(device, deviceId);
+        iComputationApi.setup();
         _warnings = warnings;
     }
     ~ISimpleGauss()
@@ -27,24 +26,30 @@ public:
     }
     inline MatImpl solve(BaseMat<MatImpl, MatT>& mat)
     {
-        if (_setuped)
+        if (iComputationApi.setuped())
             return impl()->solveImpl(mat);
         else if (_warnings)
         {
-            std::cout   << "WARNING:" << IComputationAPI::APIName() << "did not run solve SimpleGauss because "
-                        << IComputationAPI::APIName() << "was not setuped" << std::endl;
-            return std::move(MatImpl());
+            std::cout   << "WARNING: " << IComputationAPI::APIName() << " did not run solve SimpleGauss because "
+                        << IComputationAPI::APIName() << " was not setuped" << std::endl;
         }
+        return std::move(MatImpl());
     }
 
     inline bool finalizeComputationAPI()
     {
-        if (_setuped) {
-            if(!iComputationApi.finalize() && _warnings)
-                std::cout << "WARNING:" << IComputationAPI::APIName() << "was not finalized successfully" << std::endl;
+        if (iComputationApi.setuped()) {
+            if (!iComputationApi.finalize())
+            {
+                if (_warnings)
+                    std::cout << "WARNING: " << IComputationAPI::APIName() << " was not finalized successfully" << std::endl;
+                return false;
+            }
+            return true;
         }
         else if (_warnings)
-            std::cout << "WARNING:" << IComputationAPI::APIName() << "was not finalized because not setuped" << std::endl;
+            std::cout << "WARNING: " << IComputationAPI::APIName() << " was not finalized because it was not setuped" << std::endl;
+        return false;
     }
 private:
     SimpleGaussImpl* impl()

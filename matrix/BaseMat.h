@@ -6,7 +6,7 @@
 #define SIMPLEGAUSS_IMATRIX_H
 
 #include <utility>
-#include <stddef.h>
+#include <cstddef>
 #include <iostream>
 #include <iomanip>
 

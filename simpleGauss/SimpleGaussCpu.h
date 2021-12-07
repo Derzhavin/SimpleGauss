@@ -5,7 +5,6 @@
 #ifndef SIMPLEGAUSS_SIMPLEGAUSSCPU_H
 #define SIMPLEGAUSS_SIMPLEGAUSSCPU_H
 
-#include "ISimpleGauss.h"
 #include "computationAPI/SimpleCPUAPI.h"
 
 template<class MatImpl, typename MatT>
@@ -14,7 +13,7 @@ class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl
 
 public:
     explicit SimpleGaussCPU(bool warnings= false):
-        ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl, MatT, SimpleCPUAPI>(Device::CPU, 0, warnings=warnings)
+        ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl, MatT, SimpleCPUAPI>(warnings=warnings)
     {
 
     }

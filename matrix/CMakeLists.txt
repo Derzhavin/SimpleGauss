@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.16)
 get_filename_component(project_dir ${CMAKE_CURRENT_LIST_DIR} NAME)
 project(${project_dir})
 
