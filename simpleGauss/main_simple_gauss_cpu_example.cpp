@@ -14,12 +14,13 @@ int main()
     std::string filename("../../data/equation/test_1.json");
     auto mat = JsonMatIO<DenseMat<double>, double>::parseFile(filename);
 
-    SimpleGaussCPU<DenseMat<double>, double> solver(true);
+    SimpleGaussCPU<DenseMat<double>, double> solver;
     auto matSolution(solver.solve(mat));
 
     std:: cout << JsonMatIO<DenseMat<double>, double>::stringify(matSolution) << std:: endl;
 
     std::string fileSolution("solution.json");
     JsonMatIO<DenseMat<double>, double>::saveMat(matSolution, fileSolution);
+
     return 0;
 }

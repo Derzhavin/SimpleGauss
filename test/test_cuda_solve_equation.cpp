@@ -10,29 +10,29 @@
 
 class CudaSolveEquationTest: public testing::Test {
 public:
-    SimpleGaussCuda<DenseMat<double>, double> solver;
+    SimpleGaussCuda<double> solver;
 };
 
 TEST_F(CudaSolveEquationTest, SolveEquationTest0)
 {
-    std::string matTestPath = "../../../data/straight_passage/test_0.json";
+    std::string matTestPath = "./data/equation/test_0.json";
     DenseMat<double> matTest(JsonMatIO<DenseMat<double>, double>::parseFile(matTestPath));
-    std::string matAnswerPath = "../../../data/straight_passage/answer_0.json";
+    std::string matAnswerPath = "./data/equation/answer_0.json";
     DenseMat<double> matAnswer(JsonMatIO<DenseMat<double>, double>::parseFile(matAnswerPath));
 
     DenseMat<double> matSolution(solver.solve(matTest));
 
-    ASSERT_EQ(matAnswer, matSolution);
+    ASSERT_TRUE(DenseMat<double>::cmp(matAnswer, matSolution));
 }
 
 TEST_F(CudaSolveEquationTest, SolveEquationTest1)
 {
-    std::string matTestPath = "../../../data/equation/test_1.json";
+    std::string matTestPath = "./data/equation/test_1.json";
     DenseMat<double> matTest(JsonMatIO<DenseMat<double>, double>::parseFile(matTestPath));
-    std::string matAnswerPath = "../../../data/equation/answer_1.json";
+    std::string matAnswerPath = "./data/equation/answer_1.json";
     DenseMat<double> matAnswer(JsonMatIO<DenseMat<double>, double>::parseFile(matAnswerPath));
 
     DenseMat<double> matSolution(solver.solve(matTest));
 
-    ASSERT_EQ(matAnswer, matSolution);
+    ASSERT_TRUE(DenseMat<double>::cmp(matAnswer, matSolution));
 }

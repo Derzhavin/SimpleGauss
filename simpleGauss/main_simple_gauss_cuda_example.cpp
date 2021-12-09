@@ -8,15 +8,19 @@
 
 int main()
 {
-    std::string filename("../../mat.json");
-    auto mat = JsonMatIO<DenseMat<double>, double>::parseFile(filename);
+    SimpleGaussCuda<double> solver(true);
 
-    SimpleGaussCuda<DenseMat<double>, double> solver(true);
-    auto matSolution(solver.solve(mat));
+    for (int i = 0; i < 5; ++i) {
+        std::string filename("../../data/equation/test_0.json");
+        auto mat(JsonMatIO<DenseMat<double>, double>::parseFile(filename));
 
-    std:: cout << JsonMatIO<DenseMat<double>, double>::stringify(matSolution) << std:: endl;
+        auto matSolution(solver.solve(mat));
 
-    std::string fileSolution("solution.json");
-    JsonMatIO<DenseMat<double>, double>::saveMat(matSolution, fileSolution);
+        std:: cout << JsonMatIO<DenseMat<double>, double>::stringify(matSolution) << std:: endl;
+
+        std::string fileSolution("solution.json");
+        JsonMatIO<DenseMat<double>, double>::saveMat(matSolution, fileSolution);
+    }
+
     return 0;
 }

@@ -10,6 +10,8 @@
 #include <iostream>
 #include <iomanip>
 
+constexpr double myEps = 1e-2;
+
 template<class MatImplT, typename MatT>
 class BaseMat {
 protected:
@@ -48,30 +50,23 @@ public:
             std::cout << std::endl;
         }
     }
+
+    static bool cmp(BaseMat<MatImplT, MatT> &a, BaseMat<MatImplT, MatT> &b)
+    {
+        if (a.colsSize() != b.colsSize() || a.rowsSize() != b.rowsSize())
+            return false;
+        for (size_t i = 0, j; i < a.rowsSize(); ++i)
+            for (j = 0; j < a.colsSize(); ++j)
+                if (std::abs(a[i][j] - b[i][j]) > myEps)
+                    return false;
+        return true;
+    }
+
 private:
     inline MatImplT* impl()
     {
         return static_cast<MatImplT*>(this);
     }
 };
-
-constexpr double myEps = 1e-2;
-
-template<class MatImpl, typename MatT>
-bool operator==(const BaseMat<MatImpl, MatT> &matA, const BaseMat<MatImpl, MatT> &matB)
-{
-    auto matARef = const_cast<BaseMat<MatImpl, MatT>&>(matA);
-    auto matBRef = const_cast<BaseMat<MatImpl, MatT>&>(matB);
-
-    if (matARef.rowsSize() != matARef.rowsSize() || matARef.colsSize() != matB.colsSize())
-        return false;
-
-    for (size_t i = 0, j; i < matARef.rowsSize(); ++i)
-        for (j = 0; j < matARef.colsSize(); ++j)
-            if (std::abs(matARef[i][j] - matBRef[i][j]) > myEps)
-                return false;
-
-    return true;
-}
 
 #endif //SIMPLEGAUSS_IMATRIX_H

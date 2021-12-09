@@ -13,12 +13,6 @@ file(GLOB CUDA_SOURCES "*.cu")
 list(REMOVE_ITEM CPP_SOURCES "main_api_example.cpp")
 list(REMOVE_ITEM C_SOURCES "main_api_example.cpp")
 
-
-if(UNIX)
-    string(APPEND CMAKE_CXX_FLAGS " -fPIC")
-    string(APPEND CMAKE_C_FLAGS " -fPIC")
-endif()
-
 find_package(CUDA 11 REQUIRED)
 enable_language(CUDA)
 

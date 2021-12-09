@@ -5,9 +5,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CUDA_SEPARABLE_COMPILATION ON)
 
 if(UNIX)
-    string(APPEND CMAKE_CXX_FLAGS " -std=c++17 -pthread")
+    string(APPEND CMAKE_CXX_FLAGS " -std=c++11 -pthread -fPIC")
+    string(APPEND CMAKE_CUDA_FLAGS " -cudart shared -gencode arch=compute_75,code=sm_75 -O3 --compiler-options -fPIC")
 elseif(WIN32)
-    string(APPEND CMAKE_CXX_FLAGS " /std:c++17")
+    string(APPEND CMAKE_CXX_FLAGS " /std:c++11")
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL Release)
