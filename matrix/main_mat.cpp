@@ -13,6 +13,7 @@ int main()
     std::string filename("../../mat.json");
     auto mat = JsonMatIO<DenseMat<double>, double>::parseFile(filename);
     mat.printMatInStdin(10);
+    mat[1][0] = 2;
     DenseMat<double>::BaseMat& basicMat = mat;
     auto matClone(mat);
     std::cout << JsonMatIO<DenseMat<double>, double>::stringify(matClone) << std::endl;

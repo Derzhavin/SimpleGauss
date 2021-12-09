@@ -7,17 +7,18 @@ file(GLOB LIB_SOURCES "*.cpp" "*.c")
 list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_cpu_example.cpp")
 list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_cuda_example.cpp")
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
+enable_language(CUDA)
+
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}
+)
 
 add_library(${PROJECT_NAME} SHARED ${LIB_SOURCES})
-MESSAGE(STATUS "lib srcs: ${LIB_SOURCES}")
 target_link_libraries(${PROJECT_NAME} matrix computationAPI)
 
 add_executable(${PROJECT_NAME}_simple_gauss_cpu_example main_simple_gauss_cpu_example.cpp)
 target_link_libraries(${PROJECT_NAME}_simple_gauss_cpu_example ${PROJECT_NAME})
 
-enable_language(CUDA)
-
-include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 add_executable(${PROJECT_NAME}_simple_gauss_cuda_example main_simple_gauss_cuda_example.cpp)
 target_link_libraries(${PROJECT_NAME}_simple_gauss_cuda_example ${PROJECT_NAME})

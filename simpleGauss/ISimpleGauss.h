@@ -36,6 +36,7 @@ public:
         return std::move(MatImpl());
     }
 
+private:
     inline bool finalizeComputationAPI()
     {
         if (iComputationApi.setuped()) {
@@ -51,7 +52,7 @@ public:
             std::cout << "WARNING: " << IComputationAPI::APIName() << " was not finalized because it was not setuped" << std::endl;
         return false;
     }
-private:
+
     SimpleGaussImpl* impl()
     {
         return static_cast<SimpleGaussImpl*>(this);

@@ -41,7 +41,6 @@ private:
                     baseMatClone[i][j] -= coeff * baseMatClone[k][j];
             }
         }
-
         // Обратный проход
         for (k = 0; k < mat.rowsSize(); ++k)
         {
