@@ -6,7 +6,7 @@
 #define SIMPLEGAUSS_SIMPLEGAUSSCPU_H
 
 #include "computationAPI/SimpleCPUAPI.h"
-
+#include <chrono>
 template<class MatImpl, typename MatT>
 class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl,MatT, SimpleCPUAPI> {
         friend class ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl,MatT, SimpleCPUAPI>;
@@ -26,6 +26,8 @@ private:
         MatImpl matSolution(1, mat.rowsSize());
         BaseMat<MatImpl, MatT>& baseMatSolution = matSolution;
 
+        auto tBegin = std::chrono::system_clock::now();
+
         size_t i, j, k;
         double coeff;
 
@@ -41,6 +43,7 @@ private:
                     baseMatClone[i][j] -= coeff * baseMatClone[k][j];
             }
         }
+
         // Обратный проход
         for (k = 0; k < mat.rowsSize(); ++k)
         {
@@ -49,6 +52,8 @@ private:
                 baseMatSolution[0][mat.rowsSize() - 1 - k] -= baseMatClone[mat.rowsSize() - 1 - k][i + 1] * baseMatSolution[0][i + 1];
             baseMatSolution[0][mat.rowsSize() - 1 - k] /= baseMatClone[mat.rowsSize() - 1 - k][mat.rowsSize() - 1 - k];
         }
+
+        std::cout << "cpu exec time (us): " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - tBegin).count() << std::endl;
 
         return std::move(matSolution);
     }

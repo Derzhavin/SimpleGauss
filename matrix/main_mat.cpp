@@ -10,7 +10,7 @@
 int main()
 {
     DenseMat<int> mat1(5, 4);
-    std::string filename("../../mat.json");
+    std::string filename("./mat.json");
     auto mat = JsonMatIO<DenseMat<double>, double>::parseFile(filename);
     mat.printMatInStdin(10);
     mat[1][0] = 2;

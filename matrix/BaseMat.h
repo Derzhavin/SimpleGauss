@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <iostream>
 #include <iomanip>
+#include <random>
 
 constexpr double myEps = 1e-2;
 
@@ -60,6 +61,21 @@ public:
                 if (std::abs(a[i][j] - b[i][j]) > myEps)
                     return false;
         return true;
+    }
+
+    static MatImplT genRandMat(size_t n, size_t m, MatT low, MatT high)
+    {
+        std::random_device rd;
+        std::default_random_engine eng(rd());
+        std::uniform_real_distribution<MatT> distribution(low, high);
+
+        MatImplT mat(n, m);
+
+        for (size_t i = 0, j; i < n; ++i)
+            for (j = 0; j < m; ++j)
+                mat[i][j] = distribution(eng);
+
+        return std::move(mat);
     }
 
 private:

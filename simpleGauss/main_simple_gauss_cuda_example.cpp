@@ -5,22 +5,18 @@
 #include "matrix/DenseMat.h"
 #include "matrix/JsonMatIO.h"
 #include "SimpleGaussCuda/SimpleGaussCuda.h"
+#include "SimpleGaussCpu.h"
 
 int main()
 {
-    SimpleGaussCuda<double> solver(true);
+    SimpleGaussCuda<float> solver(true);
 
-    for (int i = 0; i < 5; ++i) {
-        std::string filename("../../data/equation/test_0.json");
-        auto mat(JsonMatIO<DenseMat<double>, double>::parseFile(filename));
+    std::string filename("./data/equation/test_2.json");
+    auto mat(JsonMatIO<DenseMat<float>, float>::parseFile(filename));
 
-        auto matSolution(solver.solve(mat));
+    auto matSolution(solver.solve(mat));
 
-        std:: cout << JsonMatIO<DenseMat<double>, double>::stringify(matSolution) << std:: endl;
-
-        std::string fileSolution("solution.json");
-        JsonMatIO<DenseMat<double>, double>::saveMat(matSolution, fileSolution);
-    }
+    std:: cout << JsonMatIO<DenseMat<float>, float>::stringify(matSolution) << std:: endl;
 
     return 0;
 }

@@ -11,6 +11,9 @@
 #include "matrix/DenseMat.h"
 #include "simple_gauss.cuh"
 
+#include <cmath>
+#include <chrono>
+
 template<typename MatT>
 class SimpleGaussCuda: public ISimpleGauss<SimpleGaussCuda<MatT>, DenseMat<MatT>, MatT, CudaAPI> {
     friend class ISimpleGauss<SimpleGaussCuda<MatT>, DenseMat<MatT>, MatT, CudaAPI>;
@@ -25,7 +28,10 @@ public:
 private:
     DenseMat<MatT> solveImpl(BaseMat<DenseMat<MatT>, MatT>& mat)
     {
+
         DenseMat<MatT> matSolution(1, mat.rowsSize());
+
+        auto tBegin = std::chrono::system_clock::now();
 
         MatT* dev_mat = nullptr;
         size_t dev_mat_glob_size = mat.rowsSize() * mat.colsSize() * sizeof(MatT);
@@ -37,23 +43,19 @@ private:
         cudaMalloc((void**)&dev_mat_sol, dev_mat_sol_glob_size);
         cudaMemcpy(dev_mat_sol, mat.row(0), dev_mat_sol_glob_size, cudaMemcpyHostToDevice);
 
-        int threadsPerBlockDim = 32;
-        dim3 block(threadsPerBlockDim, threadsPerBlockDim, 1);
-        int blocksPerGridDimX = ceilf(matSolution.colsSize() / (float)threadsPerBlockDim);
-        int blocksPerGridDimY = ceilf(matSolution.rowsSize() / (float)threadsPerBlockDim);
+        dim3 block(32, 32, 1);
+        int blocksPerGridDimX = ceilf(matSolution.colsSize() / 32.0);
+        int blocksPerGridDimY = ceilf(matSolution.rowsSize() / 32.0);
         dim3 grid(blocksPerGridDimX, blocksPerGridDimY);
 //        simple_gauss<MatT>(grid, block, dev_mat, dev_mat_sol, mat.rowsSize(), mat.colsSize());
         simple_gauss(grid, block, dev_mat, dev_mat_sol, mat.rowsSize(), mat.colsSize());
 
-        cudaMemcpy(mat.row(0), dev_mat_sol, dev_mat_sol_glob_size, cudaMemcpyDeviceToHost);
-
-        DenseMat<MatT> mat1(mat.rowsSize(), mat.colsSize());
-        cudaMemcpy(mat1.row(0), dev_mat, dev_mat_glob_size, cudaMemcpyDeviceToHost);
-
-        mat1.printMatInStdin(10);
+        cudaMemcpy(matSolution.row(0), dev_mat_sol, dev_mat_sol_glob_size, cudaMemcpyDeviceToHost);
 
         cudaFree(dev_mat);
         cudaFree(dev_mat_sol);
+
+        std::cout << "cuda exec time (us): " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - tBegin).count() << std::endl;
 
         return std::move(matSolution);
     }
