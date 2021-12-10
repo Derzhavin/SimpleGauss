@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
 
     DenseMat<float> mat(DenseMat<float>::genRandMat(n, n + 1, low, high));
 
-    cudaSolver.solve(mat);
-    cpuSolver.solve(mat);
+    auto cudaSolution(cudaSolver.solve(mat));
+    auto cpuSolution(cpuSolver.solve(mat));
+    std::cout << "check matrix: " <<(DenseMat<float>::cmp(cudaSolution, cpuSolution) ? "true" : "false") << std::endl;
     return 0;
 }

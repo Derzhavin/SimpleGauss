@@ -43,9 +43,10 @@ private:
         cudaMalloc((void**)&dev_mat_sol, dev_mat_sol_glob_size);
         cudaMemcpy(dev_mat_sol, mat.row(0), dev_mat_sol_glob_size, cudaMemcpyHostToDevice);
 
-        dim3 block(32, 32, 1);
-        int blocksPerGridDimX = ceilf(matSolution.colsSize() / 32.0);
-        int blocksPerGridDimY = ceilf(matSolution.rowsSize() / 32.0);
+        int threadsDim = 16;
+        dim3 block(threadsDim, threadsDim, 1);
+        int blocksPerGridDimX = ceilf(matSolution.colsSize() / (float)threadsDim);
+        int blocksPerGridDimY = ceilf(matSolution.rowsSize() / (float) threadsDim);
         dim3 grid(blocksPerGridDimX, blocksPerGridDimY);
 //        simple_gauss<MatT>(grid, block, dev_mat, dev_mat_sol, mat.rowsSize(), mat.colsSize());
         simple_gauss(grid, block, dev_mat, dev_mat_sol, mat.rowsSize(), mat.colsSize());
