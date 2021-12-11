@@ -6,8 +6,11 @@ file(GLOB_RECURSE LIB_SOURCES "*.cpp" "*.c" "*.cu")
 
 list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_big_mat_example.cpp")
 list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_cuda_example.cpp")
-list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_cuda_example.cpp")
+list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_cpu_example.cpp")
+list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_measure_cuda.cpp")
+list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_measure_cpu.cpp")
 
+message(STATUS "srcs: ${LIB_SOURCES}")
 enable_language(CUDA)
 
 include_directories(
@@ -25,3 +28,9 @@ target_link_libraries(${PROJECT_NAME}_simple_gauss_cuda_example ${PROJECT_NAME})
 
 add_executable(${PROJECT_NAME}_simple_gauss_big_mat_example main_simple_gauss_big_mat_example.cpp)
 target_link_libraries(${PROJECT_NAME}_simple_gauss_big_mat_example ${PROJECT_NAME})
+
+add_executable(${PROJECT_NAME}_simple_gauss_measure_cuda main_simple_gauss_measure_cuda.cpp)
+target_link_libraries(${PROJECT_NAME}_simple_gauss_measure_cuda ${PROJECT_NAME})
+
+add_executable(${PROJECT_NAME}_simple_gauss_measure_cpu main_simple_gauss_measure_cpu.cpp)
+target_link_libraries(${PROJECT_NAME}_simple_gauss_measure_cpu ${PROJECT_NAME})

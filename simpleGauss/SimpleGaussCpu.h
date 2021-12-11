@@ -6,6 +6,7 @@
 #define SIMPLEGAUSS_SIMPLEGAUSSCPU_H
 
 #include "computationAPI/SimpleCPUAPI.h"
+#include "ISimpleGauss.h"
 #include <chrono>
 template<class MatImpl, typename MatT>
 class SimpleGaussCPU: public ISimpleGauss<SimpleGaussCPU<MatImpl, MatT>, MatImpl,MatT, SimpleCPUAPI> {
