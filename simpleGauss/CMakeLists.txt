@@ -10,7 +10,6 @@ list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_cpu_example.cpp")
 list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_measure_cuda.cpp")
 list(FILTER LIB_SOURCES EXCLUDE REGEX "main_simple_gauss_measure_cpu.cpp")
 
-message(STATUS "srcs: ${LIB_SOURCES}")
 enable_language(CUDA)
 
 include_directories(
