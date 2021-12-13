@@ -11,7 +11,7 @@ int main()
 {
     SimpleGaussCuda<float> solver(true);
 
-    std::string filename("./data/equation/test_2.json");
+    std::string filename("./data/equation/test_0.json");
     auto mat(JsonMatIO<DenseMat<float>, float>::parseFile(filename));
 
     auto matSolution(solver.solve(mat));

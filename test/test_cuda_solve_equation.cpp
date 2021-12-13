@@ -68,7 +68,7 @@ TEST_F(CudaSolveEquationTest, SolveEquationTest4)
 {
     float low = -100;
     float high = 100;
-    size_t n = 16;
+    size_t n = 64;
     DenseMat<float> mat(DenseMat<float>::genRandMat(n, n + 1, low, high));
 
     auto cudaSolution(cudaSolver.solve(mat));
@@ -102,3 +102,68 @@ TEST_F(CudaSolveEquationTest, SolveEquationTest6)
 
     ASSERT_TRUE(DenseMat<float>::cmp(cudaSolution, cpuSolution));
 }
+
+TEST_F(CudaSolveEquationTest, SolveEquationTest7)
+{
+    float low = -100;
+    float high = 100;
+    size_t n = 111;
+    DenseMat<float> mat(DenseMat<float>::genRandMat(n, n + 1, low, high));
+
+    auto cudaSolution(cudaSolver.solve(mat));
+    auto cpuSolution(cpuSolver.solve(mat));
+
+    ASSERT_TRUE(DenseMat<float>::cmp(cudaSolution, cpuSolution));
+}
+
+//TEST_F(CudaSolveEquationTest, SolveEquationTest8)
+//{
+//    float low = -100;
+//    float high = 100;
+//    size_t n = 112;
+//    DenseMat<float> mat(DenseMat<float>::genRandMat(n, n + 1, low, high));
+//
+//    auto cudaSolution(cudaSolver.solve(mat));
+//    auto cpuSolution(cpuSolver.solve(mat));
+//
+//    ASSERT_TRUE(DenseMat<float>::cmp(cudaSolution, cpuSolution));
+//}
+//
+//TEST_F(CudaSolveEquationTest, SolveEquationTest9)
+//{
+//    float low = -100;
+//    float high = 100;
+//    size_t n = 127;
+//    DenseMat<float> mat(DenseMat<float>::genRandMat(n, n + 1, low, high));
+//
+//    auto cudaSolution(cudaSolver.solve(mat));
+//    auto cpuSolution(cpuSolver.solve(mat));
+//
+//    ASSERT_TRUE(DenseMat<float>::cmp(cudaSolution, cpuSolution));
+//}
+//
+//TEST_F(CudaSolveEquationTest, SolveEquationTest10)
+//{
+//    float low = -100;
+//    float high = 100;
+//    size_t n = 244;
+//    DenseMat<float> mat(DenseMat<float>::genRandMat(n, n + 1, low, high));
+//
+//    auto cudaSolution(cudaSolver.solve(mat));
+//    auto cpuSolution(cpuSolver.solve(mat));
+//
+//    ASSERT_TRUE(DenseMat<float>::cmp(cudaSolution, cpuSolution));
+//}
+//
+//TEST_F(CudaSolveEquationTest, SolveEquationTest11)
+//{
+//    float low = -100;
+//    float high = 100;
+//    size_t n = 255;
+//    DenseMat<float> mat(DenseMat<float>::genRandMat(n, n + 1, low, high));
+//
+//    auto cudaSolution(cudaSolver.solve(mat));
+//    auto cpuSolution(cpuSolver.solve(mat));
+//
+//    ASSERT_TRUE(DenseMat<float>::cmp(cudaSolution, cpuSolution));
+//}

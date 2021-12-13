@@ -29,8 +29,8 @@ private:
     DenseMat<MatT> solveImpl(BaseMat<DenseMat<MatT>, MatT>& mat)
     {
 
-        DenseMat<MatT> matSolution(1, mat.rowsSize());
-
+        DenseMat<MatT> matSol(1, mat.rowsSize());
+        DenseMat<MatT> matClone(mat.rowsSize(), mat.colsSize());
         auto tBegin = std::chrono::system_clock::now();
 
         MatT* dev_mat = nullptr;
@@ -38,27 +38,26 @@ private:
         cudaMalloc((void**)&dev_mat, dev_mat_glob_size);
         cudaMemcpy(dev_mat, mat.row(0), dev_mat_glob_size, cudaMemcpyHostToDevice);
 
-        MatT* dev_mat_sol = nullptr;
-        size_t dev_mat_sol_glob_size = mat.rowsSize() * sizeof(MatT);
-        cudaMalloc((void**)&dev_mat_sol, dev_mat_sol_glob_size);
-        cudaMemcpy(dev_mat_sol, mat.row(0), dev_mat_sol_glob_size, cudaMemcpyHostToDevice);
 
-        int threadsDim = 16;
-        dim3 block(threadsDim, threadsDim, 1);
-        int blocksPerGridDimX = ceilf(matSolution.colsSize() / (float)threadsDim);
-        int blocksPerGridDimY = ceilf(matSolution.rowsSize() / (float) threadsDim);
-        dim3 grid(blocksPerGridDimX, blocksPerGridDimY);
-//        simple_gauss<MatT>(grid, block, dev_mat, dev_mat_sol, mat.rowsSize(), mat.colsSize());
-        simple_gauss(grid, block, dev_mat, dev_mat_sol, mat.rowsSize(), mat.colsSize());
+//        simple_gauss_straight_passage<MatT>(numBlocks, threadsPerBlock, dev_mat, mat.rowsSize(), mat.colsSize());
+        simple_gauss_straight_passage(dev_mat, mat.rowsSize(), mat.colsSize());
 
-        cudaMemcpy(matSolution.row(0), dev_mat_sol, dev_mat_sol_glob_size, cudaMemcpyDeviceToHost);
+        cudaMemcpy(matClone.row(0), dev_mat, dev_mat_glob_size, cudaMemcpyDeviceToHost);
+
+        // Обратный проход
+        for (size_t k = 0, i; k < mat.rowsSize(); ++k)
+        {
+            for (i = mat.rowsSize() - 1 - k; i < mat.rowsSize() - 1; ++i)
+                matSol[0][mat.rowsSize() - 1 - k] -= matClone[mat.rowsSize() - 1 - k][i + 1] * matSol[0][i + 1];
+            matSol[0][mat.rowsSize() - 1 - k] =
+                    (matSol[0][mat.rowsSize() - 1 - k] + matClone[mat.rowsSize() - 1 - k][mat.rowsSize()]) / matClone[mat.rowsSize() - 1 - k][mat.rowsSize() - 1 - k];
+        }
 
         cudaFree(dev_mat);
-        cudaFree(dev_mat_sol);
 
         std::cout << "cuda exec time (us): " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - tBegin).count() << std::endl;
 
-        return std::move(matSolution);
+        return std::move(matSol);
     }
 };
 

@@ -6,7 +6,7 @@ set(CUDA_SEPARABLE_COMPILATION ON)
 
 if(UNIX)
     string(APPEND CMAKE_CXX_FLAGS " -std=c++11 -pthread -fPIC")
-    string(APPEND $CMAKE_CUDA_FLAGS "-cudart shared -arch=sm_75 -Xptxas=\"-v\" -fPIC")
+    string(APPEND $CMAKE_CUDA_FLAGS "-cudart shared  -rdc=true -lcudadevrt -arch=sm_75 -Xptxas=\"-v\" -fPIC")
 elseif(WIN32)
     string(APPEND CMAKE_CXX_FLAGS " /std:c++11")
 endif()
