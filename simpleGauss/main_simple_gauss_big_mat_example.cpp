@@ -8,6 +8,12 @@
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2)
+    {
+        std::cout << "too few program arguments, need 1" << std::endl;
+        return 0;
+    }
+
     size_t n = strtol(argv[1], nullptr, 0);
     float low = -100;
     float high = 100;

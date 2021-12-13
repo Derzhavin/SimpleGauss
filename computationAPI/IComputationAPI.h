@@ -6,6 +6,8 @@
 #define SIMPLEGAUSS_ICOMPUTATIONAPI_H
 
 #include <string>
+#include <chrono>
+#include <iostream>
 
 enum class Device
 {
@@ -21,11 +23,14 @@ protected:
 public:
     IComputationAPI(): _setuped(false), _finalized(false)
     {
-        setup();
     }
     inline bool setup()
     {
+        auto tBegin = std::chrono::system_clock::now();
         _setuped = impl()->setupImpl();
+        std::cout   << APIName() << " setup setup() time (us): "
+                    << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - tBegin).count() << std::endl;
+
         _finalized = false;
         return _setuped;
     }
