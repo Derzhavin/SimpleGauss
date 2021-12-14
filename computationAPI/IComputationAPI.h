@@ -28,8 +28,8 @@ public:
     {
         auto tBegin = std::chrono::system_clock::now();
         _setuped = impl()->setupImpl();
-        std::cout   << APIName() << " setup setup() time (us): "
-                    << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - tBegin).count() << std::endl;
+//        std::cout   << APIName() << " setup setup() time (us): "
+//                    << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - tBegin).count() << std::endl;
 
         _finalized = false;
         return _setuped;

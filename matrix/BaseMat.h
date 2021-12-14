@@ -11,7 +11,7 @@
 #include <iomanip>
 #include <random>
 
-constexpr double myEps = 1e-2;
+constexpr double myEps = 1e-1;
 
 template<class MatImplT, typename MatT>
 class BaseMat {
@@ -58,7 +58,11 @@ public:
             return false;
         for (size_t i = 0, j; i < a.rowsSize(); ++i)
             for (j = 0; j < a.colsSize(); ++j)
-                if (std::abs(a[i][j] - b[i][j]) > myEps)
+                if ((std::isnan(a[i][j]) && !std::isnan(b[i][j]))
+                    || (std::isnan(b[i][j]) && !std::isnan(a[i][j]))
+                   || (std::isinf(b[i][j]) && !std::isinf(a[i][j]))
+                      || (std::isinf(a[i][j]) && !std::isinf(b[i][j]))
+                    || std::abs(a[i][j] - b[i][j]) > myEps)
                     return false;
         return true;
     }

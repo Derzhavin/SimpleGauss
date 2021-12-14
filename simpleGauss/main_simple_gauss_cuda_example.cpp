@@ -9,14 +9,14 @@
 
 int main()
 {
-    SimpleGaussCuda<float> solver(true);
+    SimpleGaussCuda<double> solver(true);
 
-    std::string filename("./data/equation/test_0.json");
-    auto mat(JsonMatIO<DenseMat<float>, float>::parseFile(filename));
+    std::string filename("./data/equation/test_1.json");
+    auto mat(JsonMatIO<DenseMat<double>, double>::parseFile(filename));
 
     auto matSolution(solver.solve(mat));
 
-    std:: cout << JsonMatIO<DenseMat<float>, float>::stringify(matSolution) << std:: endl;
+    std:: cout << JsonMatIO<DenseMat<double>, double>::stringify(matSolution) << std:: endl;
 
     return 0;
 }
